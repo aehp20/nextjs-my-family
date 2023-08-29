@@ -15,7 +15,7 @@ function People() {
           px={4}
           h={8}
         >
-          <LinkOverlay href="/people/add">Click</LinkOverlay>
+          <LinkOverlay href="/people/add">Add</LinkOverlay>
         </LinkBox>
       </Box>
     </Box>
