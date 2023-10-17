@@ -1,14 +1,15 @@
 'use client'
 
-import { Button, Form, Input, message, Space } from 'antd';
+import { Button, Space } from 'antd';
 
 function People() {
+  // 
   return (
     <div>
-      <div display="flex" flexDirection="row" justifyContent="space-between">
+      <Space>
         <div>People</div>
-        <a href="/people/add">Add</a>
-      </div>
+        <Button type="primary" href="/people/add">Add</Button>
+      </Space>
       <div>
         LIST
         <div><a href='/people/11111'>11111</a></div>
