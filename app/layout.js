@@ -1,7 +1,7 @@
 import { Pacifico } from 'next/font/google'
 
 import Navbar from '../components/Navbar'
-import Providers from './providers'
+import { RootStyleRegistry } from '../components/RootStyleRegistry'
 
 import './globals.css'
 
@@ -21,10 +21,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={pacifico.className}>
-        <Providers>
+        <RootStyleRegistry>
           <Navbar />
           {children}
-        </Providers>
+        </RootStyleRegistry>
       </body>
     </html>
   )

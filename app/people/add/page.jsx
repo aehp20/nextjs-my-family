@@ -1,59 +1,62 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  Input,
-} from '@chakra-ui/react'
+import { Button, Form, Input, message, Space } from 'antd';
+import { useRouter } from 'next/navigation';
 
 function AddPeople() {
-  const {
-    handleSubmit,
-    register,
-    formState: { errors, isSubmitting },
-  } = useForm()
+  const router = useRouter();
+  const [form] = Form.useForm();
 
-  const onSubmit = (values) => {
-    console.log(values)
-  }
+  const onFinish = (values) => {
+    console.log("onFinish", values)
+
+    message.success('Submit success!');
+
+    router.push('/people');
+  };
+
+  const onFinishFailed = () => {
+    message.error('Submit failed!');
+  };
 
   return (
-    <Box>
-      <Box>Add People</Box>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isRequired>
-          <FormLabel>Firstname</FormLabel>
-          <Input
-            id="firstname"
-            placeholder="Enter a firstname"
-            {...register('firstname', {
-              required: 'This is required',
-            })}
-          />
-          <FormErrorMessage>
-            {errors.firstname && errors.firstname.message}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl>
-          <FormLabel>Lastname</FormLabel>
-          <Input
-            id="lastname"
-            placeholder="Enter a lastname"
-            {...register('lastname')}
-          />
-          <FormErrorMessage>
-            {errors.lastname && errors.lastname.message}
-          </FormErrorMessage>
-        </FormControl>
-        <Button mt={4} isLoading={isSubmitting} type="submit">
-          Add
-        </Button>
-      </form>
-    </Box>
+    <div>
+      <div>Add People</div>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="off"
+      >
+        <Form.Item
+          name="firstname"
+          label="Firstname"
+          rules={[{ required: true }]}
+        >
+          <Input placeholder="Enter a firstname" />
+        </Form.Item>
+        <Form.Item
+          name="fatherLastName"
+          label="Father lastname"
+        >
+          <Input placeholder="Enter a father lastname" />
+        </Form.Item>
+        <Form.Item
+          name="motherLastName"
+          label="Mother lastname"
+        >
+          <Input placeholder="Enter a mother lastname" />
+        </Form.Item>
+        <Form.Item>
+          <Space>
+            <Button type="primary" htmlType="submit">
+              Add
+            </Button>
+          </Space>
+        </Form.Item>
+      </Form>
+    </div>
   )
 }
 

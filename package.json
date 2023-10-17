@@ -9,17 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@chakra-ui/next-js": "^2.1.5",
-    "@chakra-ui/react": "^2.8.0",
+    "@ant-design/cssinjs": "^1.17.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "antd": "^5.10.1",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "framer-motion": "^10.16.1",
     "next": "13.4.19",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.45.4",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

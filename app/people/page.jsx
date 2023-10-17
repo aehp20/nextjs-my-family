@@ -1,24 +1,19 @@
 'use client'
 
-import { Box, LinkBox, LinkOverlay } from '@chakra-ui/react'
+import { Button, Form, Input, message, Space } from 'antd';
 
 function People() {
   return (
-    <Box>
-      <Box display="flex" flexDirection="row" justifyContent="space-between">
-        <Box>People</Box>
-        <LinkBox
-          as="button"
-          borderRadius="md"
-          bg="tomato"
-          color="white"
-          px={4}
-          h={8}
-        >
-          <LinkOverlay href="/people/add">Add</LinkOverlay>
-        </LinkBox>
-      </Box>
-    </Box>
+    <div>
+      <div display="flex" flexDirection="row" justifyContent="space-between">
+        <div>People</div>
+        <a href="/people/add">Add</a>
+      </div>
+      <div>
+        LIST
+        <div><a href='/people/11111'>11111</a></div>
+      </div>
+    </div>
   )
 }
 
