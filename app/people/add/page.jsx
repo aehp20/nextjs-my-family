@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 // import dayjs from 'dayjs';
 // , birthday: dayjs('12/10/1981', 'DD/MM/YYYY')
 
-function AddPeople() {
+function AddPerson() {
   const router = useRouter();
   const [form] = Form.useForm();
 
@@ -88,4 +88,4 @@ function AddPeople() {
   )
 }
 
-export default AddPeople
+export default AddPerson
