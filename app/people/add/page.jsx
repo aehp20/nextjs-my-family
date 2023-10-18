@@ -1,7 +1,9 @@
 'use client'
 
-import { Button, Form, Input, message, Space } from 'antd';
+import { Button, DatePicker, Form, Input, message, Space, Select } from 'antd';
 import { useRouter } from 'next/navigation';
+// import dayjs from 'dayjs';
+// , birthday: dayjs('12/10/1981', 'DD/MM/YYYY')
 
 function AddPeople() {
   const router = useRouter();
@@ -12,12 +14,16 @@ function AddPeople() {
 
     message.success('Submit success!');
 
-    router.push('/people');
+    // router.push('/people');
   };
 
   const onFinishFailed = () => {
     message.error('Submit failed!');
   };
+
+  const onGenderChange = (value) => {
+    form.setFieldsValue({ gender: value });
+  }
 
   return (
     <div>
@@ -28,25 +34,47 @@ function AddPeople() {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
+        initialValues={{ gender: "man" }}
       >
         <Form.Item
-          name="firstname"
-          label="Firstname"
+          name="first_name"
+          label="First name"
           rules={[{ required: true }]}
         >
-          <Input placeholder="Enter a firstname" />
+          <Input placeholder="Enter a first name" />
         </Form.Item>
         <Form.Item
-          name="fatherLastName"
-          label="Father lastname"
+          name="father_last_name"
+          label="Father last name"
         >
-          <Input placeholder="Enter a father lastname" />
+          <Input placeholder="Enter a father last name" />
         </Form.Item>
         <Form.Item
-          name="motherLastName"
-          label="Mother lastname"
+          name="mother_last_name"
+          label="Mother last name"
         >
-          <Input placeholder="Enter a mother lastname" />
+          <Input placeholder="Enter a mother last name" />
+        </Form.Item>
+        <Form.Item
+          name="gender"
+          label="Gender"
+        >
+          <Select
+            defaultValue="man"
+            onChange={onGenderChange}
+            allowClear
+            options={[
+              { value: 'man', label: 'Man' },
+              { value: 'woman', label: 'Woman' },
+              { value: 'other', label: 'Other' },
+            ]}
+          />
+        </Form.Item>
+        <Form.Item
+          name="birthday"
+          label="Birthday"
+        >
+          <DatePicker format="DD/MM/YYYY" />
         </Form.Item>
         <Form.Item>
           <Space>
