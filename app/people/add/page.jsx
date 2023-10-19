@@ -34,7 +34,7 @@ function AddPerson() {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
-        initialValues={{ gender: "man" }}
+        initialValues={{ gender: "m" }}
       >
         <Form.Item
           name="first_name"
@@ -60,13 +60,13 @@ function AddPerson() {
           label="Gender"
         >
           <Select
-            defaultValue="man"
+            defaultValue="m"
             onChange={onGenderChange}
             allowClear
             options={[
-              { value: 'man', label: 'Man' },
-              { value: 'woman', label: 'Woman' },
-              { value: 'other', label: 'Other' },
+              { value: 'm', label: 'Man' },
+              { value: 'w', label: 'Woman' },
+              { value: 'o', label: 'Other' },
             ]}
           />
         </Form.Item>
