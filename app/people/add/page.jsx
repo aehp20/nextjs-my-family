@@ -1,20 +1,44 @@
 'use client'
 
+import { useEffect } from 'react' 
 import { Button, DatePicker, Form, Input, message, Space, Select } from 'antd';
 import { useRouter } from 'next/navigation';
-// import dayjs from 'dayjs';
-// , birthday: dayjs('12/10/1981', 'DD/MM/YYYY')
+import dayjs from 'dayjs';
 
-function AddPerson() {
+async function fetchPerson(id) {
+  const response = await fetch(`/api/people/${id}`);
+  const person = await response.json();
+
+  return person;
+}
+
+function FormPerson({ params }) {
   const router = useRouter();
   const [form] = Form.useForm();
 
-  const onFinish = (values) => {
-    console.log("onFinish", values)
+  const  onFinish = async (values) => {
+    let data = values;
 
-    message.success('Submit success!');
+    if (values.birthday) {
+      data.birthday = dayjs(values.birthday).toISOString();
+    }
 
-    // router.push('/people');
+    const response = await fetch(`/api/people${params?.id ? `/${params.id}` : ''}`, {
+      method: params?.id ? 'PUT' : 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    const person = await response.json();
+
+    if (person) {
+      message.success('Submit success!');
+
+      console.log("person", person)
+  
+      router.push('/people');
+    }
   };
 
   const onFinishFailed = () => {
@@ -25,16 +49,24 @@ function AddPerson() {
     form.setFieldsValue({ gender: value });
   }
 
+  useEffect(() => {
+    if (params?.id) {
+      fetchPerson(params.id).then((data) => {
+        form.setFieldsValue({...data, birthday: data.birthday ? dayjs(data.birthday) : null });
+      });
+    }
+  }, [params]);
+
   return (
     <div>
-      <div>Add People</div>
+      <div>{params?.id ? 'Edit' : 'Add'} People</div>
       <Form
         form={form}
         layout="vertical"
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
-        initialValues={{ gender: "m" }}
+        initialValues={{gender: "m"}}
       >
         <Form.Item
           name="first_name"
@@ -79,7 +111,7 @@ function AddPerson() {
         <Form.Item>
           <Space>
             <Button type="primary" htmlType="submit">
-              Add
+              Save
             </Button>
           </Space>
         </Form.Item>
@@ -88,4 +120,4 @@ function AddPerson() {
   )
 }
 
-export default AddPerson
+export default FormPerson

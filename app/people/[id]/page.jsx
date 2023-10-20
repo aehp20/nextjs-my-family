@@ -1,9 +1,9 @@
 'use client'
 
-function EditPeople({ params }) {
-  console.log('edit', params);
+import FormPerson from '../add/page'
 
-  return (<div>OK</div>);
+function EditPeople({ params }) {
+  return (<FormPerson params={params} />);
 }
 
 export default EditPeople;

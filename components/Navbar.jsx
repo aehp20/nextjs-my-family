@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Menu } from 'antd'
 import Link from 'next/link'
 
@@ -29,6 +29,11 @@ function Navbar() {
   const onClick = (event) => {
     setCurrent(event.key);
   };
+
+  useEffect(() => {
+    const pathname = window.location.pathname.split('/')[1];
+    setCurrent(pathname === '' ? 'home' : pathname);
+  }, [window.location]);
 
   return (
     <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
