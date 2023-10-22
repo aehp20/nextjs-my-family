@@ -61,8 +61,9 @@ function People() {
     const deletedResponse = await response.json();
 
     if (deletedResponse) {
+      setSelectedPeopleKeys([]);
       setCanFetchPeople(Date.now());
-      
+
       message.success('Delete success!');
     }
   }, [selectedPeopleKeys]);
