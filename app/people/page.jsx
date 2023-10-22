@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react';
-import { Button, Flex, Typography, Table, Space } from 'antd';
+import { useState, useEffect, useCallback } from 'react';
+import { Button, Flex, Typography, Table, Space, Popconfirm, message } from 'antd';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 
@@ -42,6 +42,7 @@ async function fetchPeople() {
 
 function People() {
   const [people, setPeople] = useState([]);
+  const [canFetchPeople, setCanFetchPeople] = useState();
   const [selectedPeopleKeys, setSelectedPeopleKeys] = useState([]);
 
   const rowSelection = {
@@ -50,15 +51,27 @@ function People() {
     },
   };
 
-  const onHandleDelete = () => {
-    console.log('onHandleDelete');
-  }
+  const confirm = useCallback(async () => {
+    const idsArray = selectedPeopleKeys.map((id) => `id=${id}`);
+    const idsString = idsArray.join('&');
 
+    const response = await fetch(`/api/people?${idsString}`, {
+      method: 'DELETE'
+    })
+    const deletedResponse = await response.json();
+
+    if (deletedResponse) {
+      setCanFetchPeople(Date.now());
+      
+      message.success('Delete success!');
+    }
+  }, [selectedPeopleKeys]);
+  
   useEffect(() => {
     fetchPeople().then((people) => {
       setPeople(people.map(person=>({...person, key: person.person_id})));
     });
-  }, []);
+  }, [canFetchPeople]);
 
   return (
     <div>
@@ -66,7 +79,15 @@ function People() {
         <Title level={4}>People</Title>
         <Space>
           {selectedPeopleKeys.length > 0 && (
-            <Button type="primary" danger onClick={onHandleDelete}>Delete</Button>
+            <Popconfirm
+              title="Delete people"
+              description="Are you sure to delete the selected item(s)?"
+              onConfirm={confirm}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button type="primary" danger>Delete ({selectedPeopleKeys.length})</Button>
+            </Popconfirm>
           )}
           <Button type="primary" href="/people/add">Add</Button>
         </Space>

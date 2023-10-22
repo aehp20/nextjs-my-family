@@ -16,3 +16,15 @@ export async function POST (request) {
   })
   return NextResponse.json(newPerson);
 }
+
+export async function DELETE (request) {
+  try {
+    const ids = request.nextUrl.searchParams.getAll('id');
+    const result = await prisma.person.deleteMany({
+        where: { person_id: { in: ids } }
+    });
+    return NextResponse.json(result);
+  } catch(error) {
+    return NextResponse.json(error.message);
+  }
+}

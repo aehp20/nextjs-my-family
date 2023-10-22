@@ -92,7 +92,6 @@ function FormPerson({ params }) {
           label="Gender"
         >
           <Select
-            defaultValue="m"
             onChange={onGenderChange}
             allowClear
             options={[
