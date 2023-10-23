@@ -33,8 +33,8 @@ const columns = [
   }
 ];
 
-async function fetchPeople() {
-  const response = await fetch('/api/people');
+async function fetchPeople(currentPage, currentPageSize) {
+  const response = await fetch(`/api/people?page=${currentPage}&limit=${currentPageSize}`);
   const people = await response.json();
 
   return people;
@@ -42,7 +42,9 @@ async function fetchPeople() {
 
 function People() {
   const [people, setPeople] = useState([]);
-  const [canFetchPeople, setCanFetchPeople] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPageSize, setCurrentPageSize] = useState(10);
   const [selectedPeopleKeys, setSelectedPeopleKeys] = useState([]);
 
   const rowSelection = {
@@ -67,12 +69,19 @@ function People() {
       message.success('Delete success!');
     }
   }, [selectedPeopleKeys]);
-  
+
+  const handleOnChange = useCallback((pagination) => {
+    const { current, pageSize } = pagination;
+    setCurrentPage(current);
+    setCurrentPageSize(pageSize);
+  }, [setCurrentPage, setCurrentPageSize]);
+
   useEffect(() => {
-    fetchPeople().then((people) => {
-      setPeople(people.map(person=>({...person, key: person.person_id})));
+    fetchPeople(currentPage, currentPageSize).then(({items, total}) => {
+      setPeople(items.map(person=>({...person, key: person.person_id})));
+      setTotalPages(total);
     });
-  }, [canFetchPeople]);
+  }, [currentPage, currentPageSize]);
 
   return (
     <div>
@@ -101,7 +110,9 @@ function People() {
               ...rowSelection,
             }}
             columns={columns}
-            dataSource={people} />
+            dataSource={people}
+            pagination={{ position: ['none', 'bottomCenter'], defaultCurrent: currentPage, total: totalPages }}
+            onChange={handleOnChange} />
         ) : null}        
       </div>
     </div>
