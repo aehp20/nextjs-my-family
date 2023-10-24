@@ -46,6 +46,7 @@ function People() {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPageSize, setCurrentPageSize] = useState(10);
   const [selectedPeopleKeys, setSelectedPeopleKeys] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
 
   const rowSelection = {
     onChange: (selectedRowKeys) => {
@@ -77,10 +78,11 @@ function People() {
   }, [setCurrentPage, setCurrentPageSize]);
 
   useEffect(() => {
+    setIsFetching(true);
     fetchPeople(currentPage, currentPageSize).then(({items, total}) => {
       setPeople(items.map(person=>({...person, key: person.person_id})));
       setTotalPages(total);
-    });
+    }).finally(() => setIsFetching(false));
   }, [currentPage, currentPageSize]);
 
   return (
@@ -105,6 +107,7 @@ function People() {
       <div>
         {people.length > 0 ? (
           <Table
+            loading={isFetching}
             rowSelection={{
               type: 'checkbox',
               ...rowSelection,
